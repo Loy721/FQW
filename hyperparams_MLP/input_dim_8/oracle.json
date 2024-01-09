@@ -1,0 +1,143 @@
+Best val_mean_absolute_error So Far: 1.1458967328071594
+Total elapsed time: 00h 04m 21s
+{'units_l1': 144, 'activation_l1': 'relu', 'lr': 0.0011878979415369138}
+
+{
+  "ongoing_trials": {},
+  "hyperparameters": {
+    "space": [
+      {
+        "class_name": "Int",
+        "config": {
+          "name": "units_l1",
+          "default": null,
+          "conditions": [],
+          "min_value": 16,
+          "max_value": 1024,
+          "step": 16,
+          "sampling": "linear"
+        }
+      },
+      {
+        "class_name": "Choice",
+        "config": {
+          "name": "activation_l1",
+          "default": "relu",
+          "conditions": [],
+          "values": [
+            "relu",
+            "tanh"
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "class_name": "Float",
+        "config": {
+          "name": "lr",
+          "default": 0.0001,
+          "conditions": [],
+          "min_value": 0.0001,
+          "max_value": 0.01,
+          "step": null,
+          "sampling": "linear"
+        }
+      }
+    ],
+    "values": {
+      "units_l1": 16,
+      "activation_l1": "relu",
+      "lr": 0.0001
+    }
+  },
+  "start_order": [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09"
+  ],
+  "end_order": [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09"
+  ],
+  "run_times": {
+    "00": 1,
+    "01": 1,
+    "02": 1,
+    "03": 1,
+    "04": 1,
+    "05": 1,
+    "06": 1,
+    "07": 1,
+    "08": 1,
+    "09": 1
+  },
+  "retry_queue": [],
+  "seed": 5880,
+  "seed_state": 5910,
+  "tried_so_far": [
+    "2721f3c0c1b3046eb9a72fc5140dfaaa",
+    "0e94fd7683165869d973fbf35704ad7f",
+    "836c080961f5c23e9ac3011ce5c1078f",
+    "c30d8d04cb642b64c18e07df24cae27e",
+    "6e8821a9ad5254cb383f0f1855ef97e7",
+    "153572aeed5d82eee57925c717cc9a48",
+    "0abe04b907fa2fce62af1b349bfa151a",
+    "c0ca36d68e97a99ec89f3df431aac98a",
+    "67c41278ee8f4734b6e3017a1d6e8ce0",
+    "07d12ad9a2975b8b01d0dfdb305d2b0b"
+  ],
+  "id_to_hash": {
+    "00": "67c41278ee8f4734b6e3017a1d6e8ce0",
+    "01": "2721f3c0c1b3046eb9a72fc5140dfaaa",
+    "02": "c30d8d04cb642b64c18e07df24cae27e",
+    "03": "0abe04b907fa2fce62af1b349bfa151a",
+    "04": "0e94fd7683165869d973fbf35704ad7f",
+    "05": "c0ca36d68e97a99ec89f3df431aac98a",
+    "06": "153572aeed5d82eee57925c717cc9a48",
+    "07": "07d12ad9a2975b8b01d0dfdb305d2b0b",
+    "08": "6e8821a9ad5254cb383f0f1855ef97e7",
+    "09": "836c080961f5c23e9ac3011ce5c1078f"
+  },
+  "display": {
+    "search_start": "2024-01-07T21:27:26.610037",
+    "trial_start": {
+      "00": "2024-01-07T21:27:26.610037",
+      "01": "2024-01-07T21:27:43.808435",
+      "02": "2024-01-07T21:28:06.579301",
+      "03": "2024-01-07T21:28:35.799298",
+      "04": "2024-01-07T21:29:17.904731",
+      "05": "2024-01-07T21:29:36.567908",
+      "06": "2024-01-07T21:30:22.995731",
+      "07": "2024-01-07T21:30:42.019221",
+      "08": "2024-01-07T21:31:14.095638",
+      "09": "2024-01-07T21:31:28.034166"
+    },
+    "trial_number": {
+      "00": 1,
+      "01": 2,
+      "02": 3,
+      "03": 4,
+      "04": 5,
+      "05": 6,
+      "06": 7,
+      "07": 8,
+      "08": 9,
+      "09": 10
+    }
+  }
+}

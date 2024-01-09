@@ -1,0 +1,72 @@
+
+units 480, activation: relu; lr 0.005997502769579017
+{
+  "ongoing_trials": {
+    "tuner0": "00"
+  },
+  "hyperparameters": {
+    "space": [
+      {
+        "class_name": "Int",
+        "config": {
+          "name": "units_l1",
+          "default": null,
+          "conditions": [],
+          "min_value": 16,
+          "max_value": 1024,
+          "step": 16,
+          "sampling": "linear"
+        }
+      },
+      {
+        "class_name": "Choice",
+        "config": {
+          "name": "activation_l1",
+          "default": "relu",
+          "conditions": [],
+          "values": [
+            "relu",
+            "tanh"
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "class_name": "Float",
+        "config": {
+          "name": "lr",
+          "default": 0.0001,
+          "conditions": [],
+          "min_value": 0.0001,
+          "max_value": 0.01,
+          "step": null,
+          "sampling": "linear"
+        }
+      }
+    ],
+    "values": {
+      "units_l1": 16,
+      "activation_l1": "relu",
+      "lr": 0.0001
+    }
+  },
+  "start_order": [
+    "00"
+  ],
+  "end_order": [],
+  "run_times": {},
+  "retry_queue": [],
+  "seed": 2789,
+  "seed_state": 2792,
+  "tried_so_far": [
+    "38c33e58575bc6c35fbed2a9405a0c2f"
+  ],
+  "id_to_hash": {
+    "00": "38c33e58575bc6c35fbed2a9405a0c2f"
+  },
+  "display": {
+    "search_start": null,
+    "trial_start": {},
+    "trial_number": {}
+  }
+}
