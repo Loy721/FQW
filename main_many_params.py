@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from sklearn.preprocessing import LabelEncoder
 
 import math
@@ -10,6 +9,7 @@ from keras import activations
 from keras import callbacks
 from keras.layers import Dense
 from tensorflow import keras
+
 
 class NeuralNetwork:
     def __init__(self, n_steps, data):
@@ -54,14 +54,22 @@ class MLP(NeuralNetwork):
     def initModel(self, x_size, y_size):
         print(x_size)
         print(y_size)
-        mlp_model = tf.keras.models.Sequential()
-        mlp_model.add(tf.keras.layers.Input(shape=(self.n_steps, x_size[2])))
-        mlp_model.add(tf.keras.layers.Flatten())
-        mlp_model.add(tf.keras.layers.Dense(480, activation=activations.relu))
-        mlp_model.add(tf.keras.layers.Dense(1))
+        initializer = tf.initializers.GlorotNormal()
+        regularizer = tf.keras.regularizers.l1(1e-5)
+        layers = [
+            tf.keras.layers.Dense(80, activation=tf.keras.layers.LeakyReLU(alpha=0.2), input_shape=(self.n_steps, x_size[2]), kernel_initializer=initializer, kernel_regularizer=regularizer),
+            #tf.keras.layers.AlphaDropout(0.0012),
+            tf.keras.layers.Dense(10, activation=tf.keras.layers.LeakyReLU(alpha=0.2), kernel_initializer=initializer, kernel_regularizer=regularizer),
+            #tf.keras.layers.AlphaDropout(0.0012),
+            tf.keras.layers.Dense(20, activation=tf.keras.layers.LeakyReLU(alpha=0.2), kernel_initializer=initializer, kernel_regularizer=regularizer),
+            #tf.keras.layers.AlphaDropout(0.0012),
+            tf.keras.layers.Dense(1)
+        ]
+        model = tf.keras.Sequential(layers)
 
-        mlp_model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.005997502769579017), loss='mae')
-        return mlp_model
+        model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.0001), loss='mae')
+
+        return model
 
     def fitModel(self, EPOCHS=200):
         x_train, y_train = self.get_train_dataset()
@@ -79,6 +87,7 @@ class MLP(NeuralNetwork):
 
         return mlp_model
 
+
 class LSTM(NeuralNetwork):
 
     def __init__(self, n_steps, data):
@@ -90,15 +99,16 @@ class LSTM(NeuralNetwork):
                            'units_3': 64, 'activation_3': 'tanh', 'units_4': 64, 'activation_4': 'relu'}
 
         simple_lstm_model = keras.models.Sequential()
-
-
-        # Добавление слоя LSTM
-        simple_lstm_model.add(tf.keras.layers.LSTM(units=32, activation=activations.tanh, return_sequences=True, input_shape=(self.n_steps, x_size)))
-        simple_lstm_model.add(tf.keras.layers.LSTM(units=16, activation=activations.tanh, return_sequences=True, input_shape=(self.n_steps, x_size)))
-        simple_lstm_model.add(tf.keras.layers.LSTM(units=48, activation=activations.tanh, return_sequences=True, input_shape=(self.n_steps, x_size)))
-        simple_lstm_model.add(tf.keras.layers.LSTM(units=64, activation=activations.tanh, return_sequences=True, input_shape=(self.n_steps, x_size)))
-        simple_lstm_model.add(tf.keras.layers.LSTM(units=64, activation=activations.tanh, return_sequences=False, input_shape=(self.n_steps, x_size)))
-
+        simple_lstm_model.add(tf.keras.layers.LSTM(units=32, activation=activations.tanh, return_sequences=True,
+                                                   input_shape=(self.n_steps, x_size)))
+        simple_lstm_model.add(tf.keras.layers.LSTM(units=16, activation=activations.tanh, return_sequences=True,
+                                                   input_shape=(self.n_steps, x_size)))
+        simple_lstm_model.add(tf.keras.layers.LSTM(units=48, activation=activations.tanh, return_sequences=True,
+                                                   input_shape=(self.n_steps, x_size)))
+        simple_lstm_model.add(tf.keras.layers.LSTM(units=64, activation=activations.tanh, return_sequences=True,
+                                                   input_shape=(self.n_steps, x_size)))
+        simple_lstm_model.add(tf.keras.layers.LSTM(units=64, activation=activations.tanh, return_sequences=False,
+                                                   input_shape=(self.n_steps, x_size)))
         simple_lstm_model.add(tf.keras.layers.Dense(1))
         simple_lstm_model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.0025200304939859757),
                                   loss='mae')  # оптимизируем
@@ -118,9 +128,10 @@ class LSTM(NeuralNetwork):
                        )
         return lstm_model
 
+
 class RNN(NeuralNetwork):
     def __init__(self, n_steps, data):
-        NeuralNetwork.__init__(self,n_steps, data)
+        NeuralNetwork.__init__(self, n_steps, data)
 
     def __initModel(self, x_size):
 
@@ -137,7 +148,8 @@ class RNN(NeuralNetwork):
             # Добавление слоя SimpleRNN
             rnn_model.add(tf.keras.layers.SimpleRNN(units=units, activation=activation,
                                                     return_sequences=True if i < hyperparameters[
-                                                        'num_layers'] - 1 else False, input_shape=(self.n_steps, x_size[2])))
+                                                        'num_layers'] - 1 else False,
+                                                    input_shape=(self.n_steps, x_size[2])))
             rnn_model.add(keras.layers.Dropout(0.2))
 
         # adding the output layer
@@ -163,7 +175,8 @@ class RNN(NeuralNetwork):
                       )
         return cnn_model
 
-def mlp(data):#TODO: T всегда первый!!!
+
+def mlp(data):
     mlp = MLP(15, data.values)
     model = mlp.fitModel()
     x, y = mlp.get_test_data()
@@ -172,52 +185,53 @@ def mlp(data):#TODO: T всегда первый!!!
     loss = model.evaluate(x, y)
     print("Test Loss:", loss)
 
-    # Визуализация предсказаний
-    # predictions = model.predict(x)
-    #
-    # plt.plot(y[:100], label='Actual')
-    # plt.plot(predictions[:100], label='Predicted')
-    # plt.legend()
-    # plt.show()
+    predictions = model.predict(x)
+
+    plt.plot(y[:100], label='Actual')
+    plt.plot(predictions[:100], label='Predicted')
+    plt.legend()
+    plt.show()
 
 def lstm(data):
-    lstm = LSTM(15,  data.values)
+    lstm = LSTM(15, data.values)
     model = lstm.fitModel()
     x, y = lstm.get_test_data()
 
     loss = model.evaluate(x, y)
     print("Test Loss:", loss)
 
-    # predictions = model.predict(x)
-    #
-    # plt.plot(y[:10], label='Actual')
-    # plt.plot(predictions[:10], label='Predicted')
-    # plt.legend()
-    # plt.show()
+    predictions = model.predict(x)
+
+    plt.plot(y[:10], label='Actual')
+    plt.plot(predictions[:10], label='Predicted')
+    plt.legend()
+    plt.show()
 
 def rnn(data):
-    rnn = RNN(15,  data.values)
+    rnn = RNN(15, data.values)
     model = rnn.fitModel()
     x, y = rnn.get_test_data()
 
     loss = model.evaluate(x, y)
     print("Test Loss:", loss)
 
-    # predictions = model.predict(x)
-    #
-    # plt.plot(y[:10], label='Actual')
-    # plt.plot(predictions[:10], label='Predicted')
-    # plt.legend()
-    # plt.show()
+    predictions = model.predict(x)
 
-if __name__ == "__main__":
+    plt.plot(y[:10], label='Actual')
+    plt.plot(predictions[:10], label='Predicted')
+    plt.legend()
+    plt.show()
+
+if __name__ == "__main__":  # TODO рузультаты показали, что даже при включении признаков которые сильно коррелируют с температурой точность модели в лучем случае осталось той же
+    # TODO также попробовал вообще без признака T результаты получились немного хуже(1.34)
     ds = pd.read_excel('SE.xls', skiprows=6)
-    ds = ds.loc[:, ['T', 'P', 'Td', 'U', 'W1']]
+    ds['Date'] = pd.to_datetime(ds['Date'], format='%d.%m.%Y %H:%M', dayfirst=True)
+    ds['Day_of_year'] = ds['Date'].dt.dayofyear.astype(str).astype(int)
+    ds['Hour'] = ds['Date'].dt.hour.astype(str).astype(int)
     ds['T'] = ds['T'].ffill()
+    ds = ds.loc[:, ['T', 'Day_of_year', 'Hour']]
     le = LabelEncoder()
     #ds['DD'] = le.fit_transform(ds['DD'])
-    ds['W1'] = le.fit_transform(ds['W1'])
-    ds['Td'] = ds['Td'].ffill()
-    ds['P'] = ds['P'].ffill()
-    ds['U'] = ds['U'].ffill()
-    lstm(ds)
+    #ds['W1'] = le.fit_transform(ds['W1'])
+    #ds['Td'] = ds['Td'].ffill()
+    mlp(ds)

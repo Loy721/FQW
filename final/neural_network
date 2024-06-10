@@ -1,0 +1,25 @@
+digraph {
+	0 [label="Dense
+Neurons: 80
+Activation: LeakyReLU(alpha=0.2)
+Input dim: n_step
+"]
+	1 [label="Dropout
+Rate: 0.1
+"]
+	0 -> 1
+	2 [label="Dense
+Neurons: 10
+Activation: LeakyReLU(alpha=0.2)
+"]
+	1 -> 2
+	3 [label="Dense
+Neurons: 20
+Activation: LeakyReLU(alpha=0.2)
+"]
+	2 -> 3
+	4 [label="Dense
+Neurons: 8
+"]
+	3 -> 4
+}
